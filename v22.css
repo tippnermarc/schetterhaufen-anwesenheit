@@ -1,0 +1,223 @@
+
+/* ZunftCheck V22.0 — consolidated design layer inspired by the user's ZunftApp recording.
+   Business logic, encrypted storage and service worker registration remain from V21.6. */
+:root{--z-gold:#e7b900;--z-ink:#27334d;--z-muted:#7d8596;--z-border:#e7e6df}
+html{scroll-behavior:auto!important;overflow-x:clip}
+body{overflow-x:clip!important;background:#f0f1f5!important;color:var(--z-ink)}
+body *{box-sizing:border-box}
+body.locked{overflow:hidden!important}
+.zunft-hero{height:clamp(480px,74vh,720px)!important;background-position:center 44%!important}
+.zunft-hero h1{display:inline-block!important;width:max-content!important;max-width:100%!important;position:relative!important;line-height:1.13!important;font-size:clamp(42px,10.2vw,78px)!important;margin:0!important}
+.zunft-hero h1::after{content:""!important;display:block!important;width:100%!important;height:4px!important;background:#f3d326!important;border-radius:2px!important;margin:5px auto 0!important}
+header.app-header.zunft-topbar{
+ position:fixed!important;
+ top:calc(12px + env(safe-area-inset-top,0px))!important;
+ left:50%!important;right:auto!important;
+ transform:translateX(-50%)!important;
+ width:calc(100% - 28px)!important;
+ max-width:770px!important;
+ margin:0!important;padding:0!important;
+ background:#fff!important;
+ border-radius:17px!important;
+ z-index:150!important;
+ box-shadow:0 4px 18px #1a1d2522!important;
+}
+header.app-header.zunft-topbar .wrap{
+ width:100%!important;height:53px!important;
+ min-height:53px!important;
+ padding:5px 12px!important;
+ display:flex!important;justify-content:space-between!important;align-items:center!important;
+}
+header.app-header.zunft-topbar .zunft-home{
+ width:43px!important;height:43px!important;min-width:43px!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ padding:0!important;
+}
+header.app-header.zunft-topbar .zunft-home img{width:39px!important;height:39px!important;object-fit:cover!important;border-radius:50%!important}
+header.app-header.zunft-topbar #upArrow{
+ display:none!important;width:39px!important;height:39px!important;
+ background:#e7b900!important;color:white!important;
+ border-radius:50%!important;font-family:Arial,sans-serif!important;
+ font-size:35px!important;line-height:1!important;font-weight:700!important;
+ align-items:center!important;justify-content:center!important;
+}
+body.scrolled header.app-header.zunft-topbar .zunft-home img{display:none!important}
+body.scrolled header.app-header.zunft-topbar #upArrow{display:flex!important}
+header.app-header.zunft-topbar .zunft-menu-toggle{
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ width:43px!important;height:43px!important;min-width:43px!important;
+ background:transparent!important;color:#7b8290!important;border:0!important;
+ padding:0!important;
+}
+.hamburger-lines{display:flex;flex-direction:column;gap:6px;width:24px}
+.hamburger-lines i{display:block;height:1px;width:100%;background:#7b8290}
+body.menu-open .hamburger-lines i:nth-child(1){transform:translateY(7px) rotate(45deg)}
+body.menu-open .hamburger-lines i:nth-child(2){opacity:0}
+body.menu-open .hamburger-lines i:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+body.menu-open .zunft-menu-toggle span:after{content:none!important}
+nav.zunft-menu-dropdown{
+ position:absolute!important;top:calc(100% - 2px)!important;left:0!important;
+ width:100%!important;max-height:calc(100dvh - 95px)!important;
+ overflow-y:auto!important;
+ background:#fff!important;
+ border-radius:0 0 17px 17px!important;
+ padding:4px 15px 15px!important;
+ box-shadow:0 16px 23px #1a1d2525!important;
+}
+nav.zunft-menu-dropdown.open{display:block!important}
+nav.zunft-menu-dropdown button[data-page],nav.zunft-menu-dropdown .nav-lock{
+ padding:10px 8px!important;min-height:39px!important;
+ font-size:14px!important;font-weight:450!important;
+ color:#313b4f!important;
+}
+nav.zunft-menu-dropdown button.active{color:#9e8100!important;font-weight:700!important}
+.shell.content-shell{
+ width:calc(100% - 28px)!important;
+ max-width:850px!important;
+ margin:-44px auto 0!important;
+ padding:31px clamp(16px,4vw,30px) 38px!important;
+ border-radius:30px!important;
+ overflow:visible!important;
+ background:#fff!important;
+ box-shadow:0 15px 32px #15203617!important;
+}
+.page-intro h2{
+ font-size:clamp(27px,6.5vw,42px)!important;
+ font-family:Georgia,'Times New Roman',serif!important;
+ font-weight:700!important;color:var(--z-ink)!important;
+ margin:0 0 23px!important;
+}
+.intro-copy{color:#7b8392!important;border-left:4px solid #a7aaad!important;font-size:14px!important;line-height:1.65!important}
+.page>.card{
+ border:1px solid #e9e9e2!important;
+ border-radius:20px!important;
+ padding:29px 14px 20px!important;
+ margin:30px 0 32px!important;
+ background:#fff!important;
+ box-shadow:0 7px 23px #20262e0b!important;
+ min-width:0!important;
+}
+.page>.card>h2:first-child,.page>.card>h1:first-child,.members-card .section-head h2{
+ background:linear-gradient(110deg,#f8d92c,#e2b900)!important;
+ color:white!important;
+ border-radius:4px!important;
+ box-shadow:0 4px 10px #e7c20e24!important;
+ font-family:Georgia,'Times New Roman',serif!important;
+}
+.page .field input,.page .field select,.page .field textarea{
+ width:100%!important;max-width:100%!important;min-width:0!important;
+ box-sizing:border-box!important;
+ border-radius:7px!important;
+}
+#events #eventDate{width:100%!important;max-width:100%!important;min-width:0!important}
+.eventitem{gap:8px!important;min-width:0!important}
+.eventitem>div{flex:1!important;min-width:0!important;overflow-wrap:anywhere!important}
+.eventitem button[data-del-event]{
+ width:32px!important;height:32px!important;min-width:32px!important;
+ padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ font-size:20px!important;line-height:1!important;font-weight:400!important;
+ color:#a64d52!important;background:#fff0f0!important;border:1px solid #eacccd!important;
+ border-radius:6px!important;box-shadow:none!important;
+}
+.zunft-site-footer{margin:0 auto!important;padding:65px 20px max(32px,env(safe-area-inset-bottom))!important;gap:23px!important}
+.zunft-footer-logo{width:min(48vw,210px)!important;max-width:210px!important;aspect-ratio:auto!important;height:auto!important;border-radius:0!important;object-fit:contain!important}
+.zunft-site-footer p{font-size:12px!important;color:#8a90a0!important}
+
+/* Original ZunftApp-like login: small white floating card, gold tab, underlined inputs. */
+#authScreen{
+ background:linear-gradient(#ffffff08,#ffffff08),url('hero-original.jpg') center center/cover no-repeat!important;
+ min-height:100dvh!important;
+ padding:calc(18px + env(safe-area-inset-top,0px)) 14px calc(18px + env(safe-area-inset-bottom,0px))!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+}
+#authScreen.hidden{display:none!important}
+#authScreen .auth-panel{
+ width:min(100%,365px)!important;max-width:365px!important;
+ border:0!important;border-radius:0 0 10px 10px!important;
+ background:#fff!important;color:#37415a!important;
+ padding:0 22px 16px!important;
+ box-shadow:0 7px 27px #1515152c!important;
+ text-align:center!important;
+ overflow:visible!important;
+}
+#authScreen .auth-name{
+ position:relative!important;
+ width:calc(100% + 44px)!important;
+ margin:0 -22px 19px!important;
+ padding:17px 10px!important;
+ background:linear-gradient(110deg,#f6d72a,#ddb300)!important;
+ color:#fff!important;
+ font-family:Georgia,'Times New Roman',serif!important;
+ font-size:22px!important;font-weight:700!important;
+ letter-spacing:0!important;line-height:1.15!important;
+ box-shadow:0 6px 12px #e1bb0933!important;
+}
+#authScreen .auth-panel h2{font-family:Georgia,'Times New Roman',serif!important;color:#2b3852!important;font-size:18px!important;margin:0 0 8px!important}
+#authScreen #authDescription{font-size:11px!important;line-height:1.4!important;color:#7f8694!important;margin:0 0 8px!important}
+#authScreen .auth-panel label{
+ display:block!important;text-align:left!important;
+ color:#81889a!important;font-size:11px!important;
+ font-weight:500!important;margin:10px 0 0!important;
+}
+#authScreen .auth-panel input{
+ width:100%!important;min-width:0!important;
+ padding:8px 3px!important;height:38px!important;
+ background:transparent!important;color:#283650!important;
+ border:0!important;border-bottom:1px solid #b8bcc4!important;border-radius:0!important;
+ box-shadow:none!important;font-size:16px!important;
+}
+#authScreen .auth-panel input:focus{outline:none!important;border-bottom:2px solid #c9a500!important}
+#authScreen .auth-panel button#authSubmit{
+ width:100%!important;min-height:39px!important;
+ background:linear-gradient(110deg,#f6d72a,#ddb300)!important;
+ color:white!important;border:0!important;border-radius:4px!important;
+ margin-top:18px!important;padding:10px!important;
+ font-size:12px!important;font-weight:700!important;
+}
+#authScreen .auth-hint{font-size:10px!important;color:#8a909b!important;margin:9px 0 0!important}
+#authScreen .auth-error{color:#ae3333!important}
+#authScreen .auth-diagnostics{display:none!important}
+#authScreen .auth-version{font-size:10px!important;color:#9399a3!important;margin:7px 0 0!important}
+
+/* Dark mode: retain original layout, make every member row and search hit legible. */
+html[data-theme="dark"] body{background:#101318!important;color:#f1f2f4!important}
+html[data-theme="dark"] header.app-header.zunft-topbar,
+html[data-theme="dark"] nav.zunft-menu-dropdown{background:#20242d!important}
+html[data-theme="dark"] .hamburger-lines i{background:#e2e6ec!important}
+html[data-theme="dark"] .shell.content-shell{background:#191e26!important}
+html[data-theme="dark"] .page>.card{background:#242a34!important;border-color:#414751!important}
+html[data-theme="dark"] .page-intro h2{color:#f2f3f6!important}
+html[data-theme="dark"] .intro-copy{color:#c6ccd5!important}
+html[data-theme="dark"] .person,
+html[data-theme="dark"] .person.checked,
+html[data-theme="dark"] #people .person{
+ background:#2c333e!important;border-color:#495363!important;
+ color:#f5f6f9!important;
+}
+html[data-theme="dark"] .person .main,
+html[data-theme="dark"] #people .person .main,
+html[data-theme="dark"] .person .info,
+html[data-theme="dark"] .person .mark,
+html[data-theme="dark"] .person .info span{color:#f4f5f7!important}
+html[data-theme="dark"] .person .sub,
+html[data-theme="dark"] .person small{color:#c5ccd6!important}
+html[data-theme="dark"] .person.checked{background:#38382b!important;border-color:#ae9334!important}
+html[data-theme="dark"] .person .tag{color:#f7d968!important}
+html[data-theme="dark"] .person .tag.secondary{color:#d3d9e2!important}
+html[data-theme="dark"] .eventitem button[data-del-event]{background:#4b292f!important;color:#ffbdc1!important;border-color:#81515b!important}
+html[data-theme="dark"] nav.zunft-menu-dropdown button[data-page],
+html[data-theme="dark"] nav.zunft-menu-dropdown .nav-lock{color:#f0f2f6!important}
+html[data-theme="dark"] #authScreen .auth-panel{background:#222832!important;color:#f1f2f5!important}
+html[data-theme="dark"] #authScreen .auth-panel h2{color:#f1f2f5!important}
+html[data-theme="dark"] #authScreen .auth-panel input{color:#f1f2f5!important;border-color:#79818d!important}
+html[data-theme="dark"] #authScreen .auth-panel label{color:#cbd1da!important}
+html[data-theme="dark"] #authScreen #authDescription{color:#cbd1da!important}
+@media(max-width:420px){
+ header.app-header.zunft-topbar{top:calc(8px + env(safe-area-inset-top,0px))!important}
+ .shell.content-shell{padding:27px 14px 30px!important}
+ .page>.card{padding-left:12px!important;padding-right:12px!important}
+ .zunft-hero h1{font-size:clamp(40px,10.4vw,53px)!important}
+}
+
+/* V22.1: footer icon neatly clipped at its gold rim; no outside dark fringe */
+.zunft-footer-logo{border-radius:50%!important;clip-path:circle(48% at 50% 50%)!important;display:block!important;margin-inline:auto!important}
