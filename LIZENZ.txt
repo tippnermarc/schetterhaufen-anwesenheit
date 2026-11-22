@@ -1,4 +1,0 @@
-Schriften in diesem Ordner
-- Roboto (variable Schrift, Teilmenge Latin): SIL Open Font License 1.1, https://openfontlicense.org
-- Roboto Slab Bold: Apache License 2.0, https://www.apache.org/licenses/LICENSE-2.0
-Beide dürfen frei eingebettet und weitergegeben werden.
